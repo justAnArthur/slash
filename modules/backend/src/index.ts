@@ -35,6 +35,7 @@ export const app = new Elysia({ prefix: "/api" })
       }
     }
   })
+  .get("/hello", () => "Hello from Elysia!")
   .use(usersController)
   .use(profilesController)
   .use(articlesController)

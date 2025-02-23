@@ -22,6 +22,7 @@
         "elysia": "^1.0.14",
       },
       "devDependencies": {
+        "@slash/backend": "workspace:*",
         "@slash/tsconfig": "workspace:*",
         "@types/bun": "^1.1.2",
         "drizzle-kit": "0.20.14",
@@ -35,6 +36,7 @@
       "name": "@slash/mobile",
       "version": "1.0.0",
       "dependencies": {
+        "@elysiajs/eden": "^1.2.0",
         "@expo/vector-icons": "^14.0.2",
         "@react-navigation/bottom-tabs": "^7.2.0",
         "@react-navigation/native": "^7.0.14",
@@ -62,10 +64,13 @@
       },
       "devDependencies": {
         "@babel/core": "^7.25.2",
+        "@slash/backend": "workspace:*",
         "@slash/tsconfig": "workspace:*",
+        "@types/bun": "^1.2.3",
         "@types/jest": "^29.5.12",
         "@types/react": "~18.3.12",
         "@types/react-test-renderer": "^18.3.0",
+        "elysia": "^1.2.21",
         "jest": "^29.2.1",
         "jest-expo": "~52.0.4",
         "react-test-renderer": "18.3.1",

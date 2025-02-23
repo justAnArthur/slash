@@ -4,8 +4,19 @@ import { HelloWave } from "@/components/HelloWave"
 import ParallaxScrollView from "@/components/ParallaxScrollView"
 import { ThemedText } from "@/components/ThemedText"
 import { ThemedView } from "@/components/ThemedView"
+import { backend } from "@/services/backend"
+import { useEffect, useState } from "react"
 
 export default function HomeScreen() {
+  const [text, setText] = useState<null | string>(null)
+
+  useEffect(() => {
+    backend.api.hello
+      .get()
+      .then((res) => res.data)
+      .then(setText)
+  }, [])
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
@@ -17,7 +28,7 @@ export default function HomeScreen() {
       }
     >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <ThemedText type="title">{text}</ThemedText>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
