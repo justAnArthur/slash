@@ -26,7 +26,8 @@
     "@types/bun": "^1.1.2",
     "drizzle-kit": "0.20.14",
     "sql-log-prettifier": "^0.1.2",
-    "@slash/tsconfig": "workspace:*"
+    "@slash/tsconfig": "workspace:*",
+    "@slash/backend": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

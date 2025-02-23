@@ -20,6 +20,9 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "style": {
+        "noNonNullAssertion": "warn"
+      },
       "suspicious": {
         "noExplicitAny": "warn"
       },
