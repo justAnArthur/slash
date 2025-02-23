@@ -1,5 +1,5 @@
-import { ConsoleLogWriter, DefaultLogger } from "drizzle-orm";
-import { prettify } from "sql-log-prettifier";
+import { ConsoleLogWriter, DefaultLogger } from "drizzle-orm"
+import { prettify } from "sql-log-prettifier"
 
 const loggerSettings = {
   format: false,
@@ -7,29 +7,29 @@ const loggerSettings = {
   settings: {
     functions: {
       color: "##50fa7b",
-      modifiers: ["bold"],
+      modifiers: ["bold"]
     },
     keywords: {
       color: "#EE8F9E",
-      modifiers: ["bold"],
+      modifiers: ["bold"]
     },
     operators: {
       color: "#EE9F62",
-      modifiers: ["bold"],
+      modifiers: ["bold"]
     },
     strings: {
-      color: "#D4E1B8",
+      color: "#D4E1B8"
     },
     numbers: {
-      color: "#257CA3",
-    },
-  },
-};
-
-class DbLogger extends ConsoleLogWriter {
-  write(message: string): void {
-    console.log(prettify(message, loggerSettings));
+      color: "#257CA3"
+    }
   }
 }
 
-export const logger = new DefaultLogger({ writer: new DbLogger() });
+class DbLogger extends ConsoleLogWriter {
+  write(message: string): void {
+    console.log(prettify(message, loggerSettings))
+  }
+}
+
+export const logger = new DefaultLogger({ writer: new DbLogger() })

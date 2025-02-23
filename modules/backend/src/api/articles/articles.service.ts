@@ -1,46 +1,46 @@
-import { and, desc, eq, like } from "drizzle-orm";
-import { isDefined, notFound, toSlug, unprocessable } from "../../common/utils";
-import db from "../../db/connection";
+import { and, desc, eq, like } from "drizzle-orm"
+import { isDefined, notFound, toSlug, unprocessable } from "../../common/utils"
+import db from "../../db/connection"
 import {
   articles,
   tags,
   tagsArticles,
   userFavorites,
   userFollows,
-  users,
-} from "../../db/schema";
-import { formatProfile } from "../profiles/profiles.utils";
-import { TagService } from "../tags/tags.service";
+  users
+} from "../../db/schema"
+import { formatProfile } from "../profiles/profiles.utils"
+import { TagService } from "../tags/tags.service"
 import type {
   ArticleBase,
   ArticleInsert,
   ArticlePayload,
-  ArticleQuery,
-} from "./articles.schema";
-import { articleFields, formattedArticle } from "./articles.util";
+  ArticleQuery
+} from "./articles.schema"
+import { articleFields, formattedArticle } from "./articles.util"
 
 export abstract class ArticleService {
   static create(articlePayload: ArticlePayload, currentUserId: number) {
-    const { tagList, ...article } = articlePayload;
+    const { tagList, ...article } = articlePayload
     const values: ArticleInsert[] = [
       {
         ...article,
         authorId: currentUserId,
-        slug: toSlug(article.title),
-      },
-    ];
+        slug: toSlug(article.title)
+      }
+    ]
     try {
-      return db.transaction(tx => {
-        const res = tx.insert(articles).values(values).returning().get();
+      return db.transaction((tx) => {
+        const res = tx.insert(articles).values(values).returning().get()
         if (isDefined(tagList) && tagList.length > 0) {
-          const tags = TagService.findOrCreate(tagList, tx);
-          TagService.createLink(res.id, tags, tx);
+          const tags = TagService.findOrCreate(tagList, tx)
+          TagService.createLink(res.id, tags, tx)
         }
 
-        return this.get(res.slug, currentUserId);
-      });
+        return ArticleService.get(res.slug, currentUserId)
+      })
     } catch (e) {
-      throw unprocessable(e);
+      throw unprocessable(e)
     }
   }
 
@@ -52,29 +52,29 @@ export abstract class ArticleService {
           author: { with: { followers: true } },
           tagsArticles: {
             with: {
-              tag: true,
-            },
+              tag: true
+            }
           },
-          userFavorites: true,
-        },
+          userFavorites: true
+        }
       })
-      .sync();
+      .sync()
 
     if (!article?.slug) {
-      throw notFound();
+      throw notFound()
     }
 
-    const author = formatProfile(article.author);
+    const author = formatProfile(article.author)
 
     const tagList = article.tagsArticles
-      .map(ta => ta.tag.name)
-      .sort((a, b) => (a < b ? -1 : 1));
+      .map((ta) => ta.tag.name)
+      .sort((a, b) => (a < b ? -1 : 1))
 
     const favorited =
       !!currentUserId &&
-      !!article.userFavorites.find(fav => fav.userId === currentUserId);
+      !!article.userFavorites.find((fav) => fav.userId === currentUserId)
 
-    const favoritesCount = article.userFavorites.length;
+    const favoritesCount = article.userFavorites.length
 
     return {
       slug: article.slug,
@@ -86,15 +86,15 @@ export abstract class ArticleService {
       favorited,
       favoritesCount,
       tagList,
-      author,
-    };
+      author
+    }
   }
 
   static getFeed(
     q: Pick<ArticleQuery, "offset" | "limit">,
     currentUserId: number
   ) {
-    const { limit, offset } = q;
+    const { limit, offset } = q
 
     return db
       .select(articleFields)
@@ -110,11 +110,11 @@ export abstract class ArticleService {
       .groupBy(articles.id)
       .orderBy(desc(articles.createdAt))
       .all()
-      .map(row => formattedArticle(row, currentUserId));
+      .map((row) => formattedArticle(row, currentUserId))
   }
 
   static getList(q: ArticleQuery, currentUserId?: number) {
-    const { author: userName, tag: tagName, limit, offset } = q;
+    const { author: userName, tag: tagName, limit, offset } = q
 
     const query = db
       .select(articleFields)
@@ -125,22 +125,22 @@ export abstract class ArticleService {
       .leftJoin(userFollows, eq(userFollows.followedId, users.id))
       .leftJoin(userFavorites, eq(userFavorites.articleId, articles.id))
       .limit(limit || 20)
-      .offset(offset || 0);
+      .offset(offset || 0)
 
     if (isDefined(userName)) {
-      query.where(eq(users.username, userName));
+      query.where(eq(users.username, userName))
     }
 
     if (isDefined(tagName)) {
       // @ts-expect-error - tagString inferred type doesnt play nice with "like"
-      query.having(({ tagString }) => like(tagString, `%"${tagName}"%`));
+      query.having(({ tagString }) => like(tagString, `%"${tagName}"%`))
     }
 
     return query
       .groupBy(articles.id)
       .orderBy(desc(articles.createdAt))
       .all()
-      .map(row => formattedArticle(row, currentUserId));
+      .map((row) => formattedArticle(row, currentUserId))
   }
 
   static update(
@@ -150,57 +150,57 @@ export abstract class ArticleService {
   ) {
     const article = db.query.articles
       .findFirst({ where: eq(articles.slug, slug) })
-      .sync();
+      .sync()
 
     if (!article?.slug) {
-      throw notFound();
+      throw notFound()
     }
-    const { title, body, description } = data;
+    const { title, body, description } = data
     const newValues = {
       ...(title && { title, slug: toSlug(title) }),
       ...(body && { body }),
-      ...(description && { description }),
-    };
+      ...(description && { description })
+    }
 
-    db.update(articles).set(newValues).where(eq(articles.id, article.id)).run();
+    db.update(articles).set(newValues).where(eq(articles.id, article.id)).run()
 
-    return this.get(newValues.slug || article.slug, currentUserId);
+    return ArticleService.get(newValues.slug || article.slug, currentUserId)
   }
 
   static delete(slug: string) {
-    db.delete(articles).where(eq(articles.slug, slug)).run();
+    db.delete(articles).where(eq(articles.slug, slug)).run()
   }
 
   static addFavorite(slug: string, currentUserId: number) {
     const article = db.query.articles
       .findFirst({
-        where: eq(articles.slug, slug),
+        where: eq(articles.slug, slug)
       })
-      .sync();
+      .sync()
 
     if (!article?.slug) {
-      throw notFound();
+      throw notFound()
     }
 
     try {
       db.insert(userFavorites)
         .values([{ articleId: article.id, userId: currentUserId }])
-        .run();
-      return this.get(slug, currentUserId);
+        .run()
+      return ArticleService.get(slug, currentUserId)
     } catch (e) {
-      return this.get(slug, currentUserId);
+      return ArticleService.get(slug, currentUserId)
     }
   }
 
   static removeFavorite(slug: string, currentUserId: number) {
     const article = db.query.articles
       .findFirst({
-        where: eq(articles.slug, slug),
+        where: eq(articles.slug, slug)
       })
-      .sync();
+      .sync()
 
     if (!article?.slug) {
-      throw notFound();
+      throw notFound()
     }
 
     db.delete(userFavorites)
@@ -210,8 +210,8 @@ export abstract class ArticleService {
           eq(userFavorites.userId, currentUserId)
         )
       )
-      .run();
+      .run()
 
-    return this.get(slug, currentUserId);
+    return ArticleService.get(slug, currentUserId)
   }
 }

@@ -1,3 +1,6 @@
+import swaggerConfig from "@/swagger.config"
+import cors from "@elysiajs/cors"
+import swagger from "@elysiajs/swagger"
 import { Elysia, ValidationError } from "elysia"
 import articlesController from "./api/articles/articles.controller"
 import commentsController from "./api/comments/comments.controller"
@@ -5,12 +8,10 @@ import profilesController from "./api/profiles/profiles.controller"
 import tagsController from "./api/tags/tags.controller"
 import usersController from "./api/users/users.controller"
 import { unprocessable } from "./common/utils"
-import swagger from "@elysiajs/swagger"
-import swaggerConfig from "@/swagger.config"
 
 export const app = new Elysia({ prefix: "/api" })
   .use(swagger(swaggerConfig))
-  // .use(cors())
+  .use(cors())
   .onError(({ set, error }) => {
     set.headers["content-type"] = "application/json"
     if (error instanceof ValidationError) {
@@ -21,11 +22,11 @@ export const app = new Elysia({ prefix: "/api" })
     ]} }*/
       try {
         return unprocessable(
-          JSON.parse(error.message)["errors"].map(
+          JSON.parse(error.message).errors.map(
             (o: Record<string, string>) =>
               `Error in ${o.path}${
                 o.schema &&
-                ` of ${Object.entries(o.schema).map(arr => arr.join(" "))}`
+                ` of ${Object.entries(o.schema).map((arr) => arr.join(" "))}`
               }: ${o.message}`
           )
         )

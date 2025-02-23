@@ -1,14 +1,14 @@
-import { sql } from "drizzle-orm";
-import { isDefined } from "../../common/utils";
+import { sql } from "drizzle-orm"
+import { isDefined } from "../../common/utils"
 import {
   articles,
   tags,
   userFavorites,
   userFollows,
-  users,
-} from "../../db/schema";
-import type { User } from "../users/users.schema";
-import type { Article } from "./articles.schema";
+  users
+} from "../../db/schema"
+import type { User } from "../users/users.schema"
+import type { Article } from "./articles.schema"
 
 export function formattedArticle(
   a: Pick<
@@ -16,29 +16,29 @@ export function formattedArticle(
     "slug" | "title" | "description" | "body" | "createdAt" | "updatedAt"
   > &
     Pick<User, "username" | "bio" | "image"> & {
-      tagString: string;
-      userFollows: string;
-      userFavorites: string;
+      tagString: string
+      userFollows: string
+      userFavorites: string
     },
   currentUserId?: number
 ) {
   const tagList = [...new Set<string>(JSON.parse(a.tagString))].sort(
     (a: string, b: string) => (a < b ? -1 : 1)
-  );
+  )
 
   const following =
     !!currentUserId &&
-    !!(JSON.parse(a.userFollows) as number[]).find(id => id === currentUserId);
+    !!(JSON.parse(a.userFollows) as number[]).find((id) => id === currentUserId)
 
   const favorited =
     !!currentUserId &&
     !!(JSON.parse(a.userFavorites) as number[]).find(
-      id => id === currentUserId
-    );
+      (id) => id === currentUserId
+    )
 
   const favoritesCount = [
-    ...new Set<number>(JSON.parse(a.userFavorites)),
-  ].filter(isDefined).length;
+    ...new Set<number>(JSON.parse(a.userFavorites))
+  ].filter(isDefined).length
 
   return {
     slug: a.slug,
@@ -54,9 +54,9 @@ export function formattedArticle(
       username: a.username,
       bio: a.bio,
       image: a.image,
-      following,
-    },
-  };
+      following
+    }
+  }
 }
 
 export const articleFields = {
@@ -76,5 +76,5 @@ export const articleFields = {
   ),
   userFavorites: sql<string>`json_group_array(${userFavorites.userId})`.as(
     "userFavorites"
-  ),
-};
+  )
+}

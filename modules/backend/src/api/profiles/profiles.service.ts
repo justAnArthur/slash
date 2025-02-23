@@ -1,45 +1,45 @@
-import { and, eq } from "drizzle-orm";
-import { notFound } from "../../common/utils";
-import db from "../../db/connection";
-import { userFollows, users } from "../../db/schema";
-import { formatProfile } from "./profiles.utils";
+import { and, eq } from "drizzle-orm"
+import { notFound } from "../../common/utils"
+import db from "../../db/connection"
+import { userFollows, users } from "../../db/schema"
+import { formatProfile } from "./profiles.utils"
 
 export abstract class ProfileService {
   static get(username: string, currentUserId?: number) {
     const profile = db.query.users
       .findFirst({
         where: eq(users.username, username),
-        with: { followers: true },
+        with: { followers: true }
       })
-      .sync();
+      .sync()
 
-    return profile && formatProfile(profile, currentUserId);
+    return profile && formatProfile(profile, currentUserId)
   }
 
   static follow(username: string, currentUserId: number) {
     const followedUser = db.query.users
       .findFirst({ where: eq(users.username, username) })
-      .sync();
+      .sync()
 
-    if (!followedUser) throw notFound();
+    if (!followedUser) throw notFound()
 
     try {
       db.insert(userFollows)
         .values([{ followerId: currentUserId, followedId: followedUser.id }])
-        .run();
+        .run()
 
-      return this.get(username, currentUserId);
+      return ProfileService.get(username, currentUserId)
     } catch (e) {
-      return this.get(username, currentUserId);
+      return ProfileService.get(username, currentUserId)
     }
   }
 
   static unfollow(username: string, currentUserId: number) {
     const followedUser = db.query.users
       .findFirst({ where: eq(users.username, username) })
-      .sync();
+      .sync()
 
-    if (!followedUser) throw notFound();
+    if (!followedUser) throw notFound()
 
     db.delete(userFollows)
       .where(
@@ -48,8 +48,8 @@ export abstract class ProfileService {
           eq(userFollows.followedId, followedUser.id)
         )
       )
-      .run();
+      .run()
 
-    return this.get(username, currentUserId);
+    return ProfileService.get(username, currentUserId)
   }
 }

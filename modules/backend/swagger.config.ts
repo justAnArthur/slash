@@ -1,5 +1,5 @@
-import type { ElysiaSwaggerConfig } from "@elysiajs/swagger"
 import { description, name, version } from "@/package.json"
+import type { ElysiaSwaggerConfig } from "@elysiajs/swagger"
 
 export default {
   documentation: {

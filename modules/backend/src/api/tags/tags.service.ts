@@ -1,8 +1,8 @@
-import type { SQLiteTransaction } from "drizzle-orm/sqlite-core";
-import db from "../../db/connection";
+import type { SQLiteTransaction } from "drizzle-orm/sqlite-core"
+import db from "../../db/connection"
 
-import { tags, tagsArticles } from "../../db/schema";
-import type { Tag } from "./tags.schema";
+import { tags, tagsArticles } from "../../db/schema"
+import type { Tag } from "./tags.schema"
 
 export abstract class TagService {
   static findOrCreate(
@@ -11,22 +11,22 @@ export abstract class TagService {
   ): Tag[] {
     const existingTags = db.query.tags
       .findMany({
-        where: (tags, { inArray }) => inArray(tags.name, tagList),
+        where: (tags, { inArray }) => inArray(tags.name, tagList)
       })
-      .sync();
+      .sync()
 
-    const existingTagNames = existingTags.map(row => row.name);
-    const nonExistingTags = tagList.filter(t => !existingTagNames.includes(t));
+    const existingTagNames = existingTags.map((row) => row.name)
+    const nonExistingTags = tagList.filter((t) => !existingTagNames.includes(t))
 
-    if (nonExistingTags.length === 0) return existingTags;
+    if (nonExistingTags.length === 0) return existingTags
 
     const newTags = (tx || db)
       .insert(tags)
-      .values(nonExistingTags.map(t => ({ name: t })))
+      .values(nonExistingTags.map((t) => ({ name: t })))
       .returning()
-      .all();
+      .all()
 
-    return [...existingTags, ...newTags];
+    return [...existingTags, ...newTags]
   }
 
   static createLink(
@@ -36,12 +36,12 @@ export abstract class TagService {
   ) {
     return (tx || db)
       .insert(tagsArticles)
-      .values(tags.map(t => ({ articleId, tagId: t.id })))
+      .values(tags.map((t) => ({ articleId, tagId: t.id })))
       .returning()
-      .get();
+      .get()
   }
 
   static all() {
-    return db.query.tags.findMany().sync();
+    return db.query.tags.findMany().sync()
   }
 }
