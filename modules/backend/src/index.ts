@@ -1,16 +1,18 @@
-import cors from "@elysiajs/cors";
-import { Elysia, ValidationError } from "elysia";
-import articlesController from "./api/articles/articles.controller";
-import commentsController from "./api/comments/comments.controller";
-import profilesController from "./api/profiles/profiles.controller";
-import tagsController from "./api/tags/tags.controller";
-import usersController from "./api/users/users.controller";
-import { unprocessable } from "./common/utils";
+import { Elysia, ValidationError } from "elysia"
+import articlesController from "./api/articles/articles.controller"
+import commentsController from "./api/comments/comments.controller"
+import profilesController from "./api/profiles/profiles.controller"
+import tagsController from "./api/tags/tags.controller"
+import usersController from "./api/users/users.controller"
+import { unprocessable } from "./common/utils"
+import swagger from "@elysiajs/swagger"
+import swaggerConfig from "@/swagger.config"
 
 export const app = new Elysia({ prefix: "/api" })
-  .use(cors())
+  .use(swagger(swaggerConfig))
+  // .use(cors())
   .onError(({ set, error }) => {
-    set.headers["content-type"] = "application/json";
+    set.headers["content-type"] = "application/json"
     if (error instanceof ValidationError) {
       /* attempting to return detailed error response while maintaing realworld api error response structure
     {"errors": {"body": [
@@ -26,9 +28,9 @@ export const app = new Elysia({ prefix: "/api" })
                 ` of ${Object.entries(o.schema).map(arr => arr.join(" "))}`
               }: ${o.message}`
           )
-        );
+        )
       } catch (e) {
-        return unprocessable(error.message);
+        return unprocessable(error.message)
       }
     }
   })
@@ -37,9 +39,9 @@ export const app = new Elysia({ prefix: "/api" })
   .use(articlesController)
   .use(commentsController)
   .use(tagsController)
-  .listen(Bun.env.PORT || 3001);
+  .listen(Bun.env.PORT || 3000)
 
-export type App = typeof app;
+export type App = typeof app
 console.log(
   `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+)

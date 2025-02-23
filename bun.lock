@@ -5,13 +5,13 @@
       "name": "slash",
     },
     "modules/backend": {
-      "name": "bun-elysia-drizzle",
+      "name": "@slash/backend",
       "version": "1.0.0",
       "dependencies": {
         "@elysiajs/cors": "^1.0.2",
         "@elysiajs/eden": "^1.0.12",
         "@elysiajs/jwt": "^1.0.2",
-        "@elysiajs/swagger": "^1.0.4",
+        "@elysiajs/swagger": "^1.2.2",
         "drizzle-orm": "^0.30.9",
         "drizzle-typebox": "^0.1.1",
         "elysia": "^1.0.14",
@@ -100,6 +100,8 @@
 
     "@sinclair/typebox": ["@sinclair/typebox@0.34.28", "", {}, "sha512-e2B9vmvaa5ym5hWgCHw5CstP54au6AOLXrhZErLsOyyRzuWJtXl/8TszKtc5x8rw/b+oY7HKS9m9iRI53RK0WQ=="],
 
+    "@slash/backend": ["@slash/backend@workspace:modules/backend"],
+
     "@slash/tsconfig": ["@slash/tsconfig@workspace:packages/tsconfig"],
 
     "@types/bun": ["@types/bun@1.2.3", "", { "dependencies": { "bun-types": "1.2.3" } }, "sha512-054h79ipETRfjtsCW9qJK8Ipof67Pw9bodFWmkfkaUaRiIQ1dIV2VTlheshlBx3mpKr0KeK8VqnMMCtgN9rQtw=="],
@@ -117,8 +119,6 @@
     "brace-expansion": ["brace-expansion@2.0.1", "", { "dependencies": { "balanced-match": "^1.0.0" } }, "sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA=="],
 
     "buffer-from": ["buffer-from@1.1.2", "", {}, "sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ=="],
-
-    "bun-elysia-drizzle": ["bun-elysia-drizzle@workspace:modules/backend"],
 
     "bun-types": ["bun-types@1.2.3", "", { "dependencies": { "@types/node": "*", "@types/ws": "~8.5.10" } }, "sha512-P7AeyTseLKAvgaZqQrvp3RqFM3yN9PlcLuSTe7SoJOfZkER73mLdT2vEQi8U64S1YvM/ldcNiQjn0Sn7H9lGgg=="],
 
