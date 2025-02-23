@@ -69,16 +69,12 @@
       "indexes": {
         "articles_id_unique": {
           "name": "articles_id_unique",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": true
         },
         "articles_slug_unique": {
           "name": "articles_slug_unique",
-          "columns": [
-            "slug"
-          ],
+          "columns": ["slug"],
           "isUnique": true
         }
       },
@@ -87,12 +83,8 @@
           "name": "articles_authorId_users_id_fk",
           "tableFrom": "articles",
           "tableTo": "users",
-          "columnsFrom": [
-            "authorId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["authorId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -151,9 +143,7 @@
       "indexes": {
         "comments_id_unique": {
           "name": "comments_id_unique",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": true
         }
       },
@@ -162,12 +152,8 @@
           "name": "comments_authorId_users_id_fk",
           "tableFrom": "comments",
           "tableTo": "users",
-          "columnsFrom": [
-            "authorId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["authorId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -175,12 +161,8 @@
           "name": "comments_articleId_articles_id_fk",
           "tableFrom": "comments",
           "tableTo": "articles",
-          "columnsFrom": [
-            "articleId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["articleId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -209,16 +191,12 @@
       "indexes": {
         "tags_id_unique": {
           "name": "tags_id_unique",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": true
         },
         "tags_name_unique": {
           "name": "tags_name_unique",
-          "columns": [
-            "name"
-          ],
+          "columns": ["name"],
           "isUnique": true
         }
       },
@@ -250,12 +228,8 @@
           "name": "tagsArticles_tagId_tags_id_fk",
           "tableFrom": "tagsArticles",
           "tableTo": "tags",
-          "columnsFrom": [
-            "tagId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["tagId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -263,22 +237,15 @@
           "name": "tagsArticles_articleId_articles_id_fk",
           "tableFrom": "tagsArticles",
           "tableTo": "articles",
-          "columnsFrom": [
-            "articleId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["articleId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "tagsArticles_tagId_articleId_pk": {
-          "columns": [
-            "articleId",
-            "tagId"
-          ],
+          "columns": ["articleId", "tagId"],
           "name": "tagsArticles_tagId_articleId_pk"
         }
       },
@@ -308,12 +275,8 @@
           "name": "userFollows_followerId_users_id_fk",
           "tableFrom": "userFollows",
           "tableTo": "users",
-          "columnsFrom": [
-            "followerId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["followerId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -321,22 +284,15 @@
           "name": "userFollows_followedId_users_id_fk",
           "tableFrom": "userFollows",
           "tableTo": "users",
-          "columnsFrom": [
-            "followedId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["followedId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "userFollows_followerId_followedId_pk": {
-          "columns": [
-            "followedId",
-            "followerId"
-          ],
+          "columns": ["followedId", "followerId"],
           "name": "userFollows_followerId_followedId_pk"
         }
       },
@@ -392,23 +348,17 @@
       "indexes": {
         "users_id_unique": {
           "name": "users_id_unique",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": true
         },
         "users_email_unique": {
           "name": "users_email_unique",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": true
         },
         "users_username_unique": {
           "name": "users_username_unique",
-          "columns": [
-            "username"
-          ],
+          "columns": ["username"],
           "isUnique": true
         }
       },

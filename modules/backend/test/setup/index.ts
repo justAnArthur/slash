@@ -1,11 +1,11 @@
-import { afterAll, beforeAll, beforeEach } from "bun:test";
-import { migrate } from "drizzle-orm/bun-sqlite/migrator";
-import db, { closeDb } from "../../src/db/connection";
-import { sql } from "drizzle-orm";
+import { afterAll, beforeAll, beforeEach } from "bun:test"
+import { sql } from "drizzle-orm"
+import { migrate } from "drizzle-orm/bun-sqlite/migrator"
+import db, { closeDb } from "../../src/db/connection"
 
 beforeAll(() => {
-  migrate(db, { migrationsFolder: "sqlite/migrations" });
-});
+  migrate(db, { migrationsFolder: "sqlite/migrations" })
+})
 
 beforeEach(() => {
   const queries = [
@@ -14,12 +14,12 @@ beforeEach(() => {
     "DELETE FROM comments",
     "DELETE from tags",
     "DELETE from tagsArticles",
-    "DELETE from userFollows",
-  ];
+    "DELETE from userFollows"
+  ]
 
-  queries.forEach(q => db.run(sql.raw(q)));
-});
+  for (const q of queries) db.run(sql.raw(q))
+})
 
 afterAll(() => {
-  closeDb();
-});
+  closeDb()
+})

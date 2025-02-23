@@ -1,34 +1,34 @@
-import { Elysia, t } from "elysia";
-import jwt from "../../common/jwt";
-import { getAuthUserId, unauthorized } from "../../common/utils";
-import { commentPayload } from "./comments.schema";
-import { CommentService } from "./comments.service";
+import { Elysia, t } from "elysia"
+import jwt from "../../common/jwt"
+import { getAuthUserId, unauthorized } from "../../common/utils"
+import { commentPayload } from "./comments.schema"
+import { CommentService } from "./comments.service"
 
 export const commentsController = new Elysia({
-  prefix: "/articles/:slug/comments",
+  prefix: "/articles/:slug/comments"
 })
   .use(jwt)
   .get(
     "",
     ({ params }) => {
-      const comments = CommentService.getForArticle(params.slug);
-      return { comments };
+      const comments = CommentService.getForArticle(params.slug)
+      return { comments }
     },
     {
       params: t.Object({
-        slug: t.String(),
-      }),
+        slug: t.String()
+      })
     }
   )
   .guard(
     {
       beforeHandle({ headers: { authorization, ...headers } }) {
         if (!authorization || authorization.toString() === "") {
-          throw unauthorized();
+          throw unauthorized()
         }
-      },
+      }
     },
-    app =>
+    (app) =>
       app
         .resolve(getAuthUserId)
         .post(
@@ -38,32 +38,32 @@ export const commentsController = new Elysia({
               userId,
               params.slug,
               body.comment
-            );
-            set.status = 201;
-            return { comment };
+            )
+            set.status = 201
+            return { comment }
           },
           {
             params: t.Object({
-              slug: t.String(),
+              slug: t.String()
             }),
             body: t.Object({
-              comment: commentPayload,
-            }),
+              comment: commentPayload
+            })
           }
         )
         .delete(
           ":id",
           ({ params, set }) => {
-            CommentService.delete(params.id);
-            set.status = 204;
+            CommentService.delete(params.id)
+            set.status = 204
           },
           {
             params: t.Object({
               slug: t.String(),
-              id: t.Numeric(),
-            }),
+              id: t.Numeric()
+            })
           }
         )
-  );
+  )
 
-export default commentsController;
+export default commentsController
