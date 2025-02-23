@@ -1,0 +1,8 @@
+{
+  "name": "slash",
+  "private": true,
+  "workspaces": [
+    "modules/*",
+    "packages/*"
+  ]
+}
