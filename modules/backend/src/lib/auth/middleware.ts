@@ -6,16 +6,5 @@ export const authMiddleware = async (context: Context) => {
     headers: context.request.headers
   })
 
-  if (!session) {
-    context.set.status = 401
-    return {
-      success: "error",
-      message: "Unauthorized Access: Token is missing"
-    }
-  }
-
-  return {
-    user: session.user,
-    session: session.session
-  }
+  if (!session) return context.error(401)
 }

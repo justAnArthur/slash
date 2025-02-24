@@ -1,8 +1,11 @@
 import { authClient } from "@/lib/auth"
+import { useRouter } from "expo-router"
 import { useState } from "react"
 import { Button, TextInput, View } from "react-native"
 
-export default function App() {
+export default function SignInScreen() {
+  const router = useRouter()
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
@@ -11,15 +14,22 @@ export default function App() {
       email,
       password
     })
+    router.push("/")
   }
 
   return (
     <View>
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        style={{ color: "white" }}
+      />
       <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
+        style={{ color: "white" }}
       />
       <Button title="Login" onPress={handleLogin} />
     </View>
