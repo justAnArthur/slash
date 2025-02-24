@@ -6,7 +6,7 @@ Structure wise this is closer to something like NestJS, since Elysia is not real
 
 - `*.controller.ts` denotes a controller file, which is an Elysia plugin (separated for each resource as recommended by [the docs](https://elysiajs.com/essential/plugin.html#plugin))
 - `*.service.ts` will hold any logic, to keep controllers lean
-- `*.schema.ts` file will hold related schema objects and types either inferred or generated from them, will be used in both controller and service files
+- `*.schema.index.ts` file will hold related schema objects and types either inferred or generated from them, will be used in both controller and service files
 - `*.utils.ts` optionally for even more granular logic related to a resource
 
 ### src/db folder
@@ -14,7 +14,7 @@ Structure wise this is closer to something like NestJS, since Elysia is not real
 Will contain logic to create a database connection, a migration script and the schema definitions
 Note that /sqlite folder will contain the DB files and the generated migrations
 
-:warning: **Pro tip** In order to generate sql migration scripts one needs only to change the `schema.ts` file and run `bun migration:create`, drizzle-kit will figure out how to generate sql from those changes
+:warning: **Pro tip** In order to generate sql migration scripts one needs only to change the `schema.index.ts` file and run `bun migration:create`, drizzle-kit will figure out how to generate sql from those changes
 
 ### src/test folder
 
