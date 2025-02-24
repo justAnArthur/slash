@@ -5,7 +5,7 @@ import db from "../../db/connection"
 import * as authSchema from "../../db/schema.auth"
 
 export const auth = betterAuth({
-  trustedOrigins: ["slash://", "http://localhost:8081"],
+  trustedOrigins: ["slash://", Bun.env.FRONTEND_URL!],
   plugins: [expo()],
   emailAndPassword: {
     enabled: true,
