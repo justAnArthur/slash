@@ -5,7 +5,7 @@ import { createAuthClient } from "better-auth/dist/react"
 import * as SecureStore from "expo-secure-store"
 
 export const authClient = createAuthClient({
-  baseURL: "http://localhost:3000", // todo check not working with process.env.BACKEND_URL!,
+  baseURL: process.env.EXPO_PUBLIC_BACKEND_URL,
   plugins: [
     expoClient({
       scheme: "slash",
