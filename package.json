@@ -1,8 +1,14 @@
 {
   "name": "slash",
   "private": true,
-  "workspaces": [
-    "modules/*",
-    "packages/*"
-  ]
+  "workspaces": ["modules/*", "packages/*"],
+  "scripts": {
+    "postinstall": "lefthook install",
+    "biome:check": "npx @biomejs/biome check --write --files-ignore-unknown=true --no-errors-on-unmatched"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "install": "^0.13.0",
+    "lefthook": "^1.11.0"
+  }
 }
