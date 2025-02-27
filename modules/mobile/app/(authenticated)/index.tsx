@@ -40,7 +40,7 @@ export default function HomeScreen() {
           <ThemedText type="title" style={{ fontFamily: "JetBrainsMono" }}>
             {i18n.t("welcome")} {welcomeFromBackend} {session?.user.name}
           </ThemedText>
-          <HelloWave />
+          {/*<HelloWave /> */}
         </ThemedView>
 
         <ThemedLink
