@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+@source '../node_modules/fumadocs-ui/dist/**/*.js';
+
+@layer components {
+  .card {
+    @apply block rounded-lg border bg-fd-card p-4 text-fd-card-foreground shadow-md transition-colors hover:bg-fd-accent/80
+  }
+}
