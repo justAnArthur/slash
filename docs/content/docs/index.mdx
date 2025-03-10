@@ -530,11 +530,11 @@ flowchart LR
 ```
 
 ### UATs
-<Accordions>
+
 **Positive tests**
 
+<Accordions type="multiple">
 <Accordion title="Test 1: Create new account">
-
 
 **Input conditions:**
 User has an internet connection. User provides a valid email, username, and password. Password meets security requirements (e.g., length, special characters).
@@ -574,19 +574,19 @@ Message with geolocation is sent.
 **Steps:**
 <Steps>
 <Step>
-1. Open the app and navigate to the existing chat.
+Open the app and navigate to the existing chat.
 </Step>
 <Step>
-2. Click "Attachments" button.
+Click "Attachments" button.
 </Step>
 <Step>
-3. Click "Geolocation" button.
+Click "Geolocation" button.
 </Step>
 <Step>
-4. Allow location permissions if prompted.
+Allow location permissions if prompted.
 </Step>
 <Step>
-5. Click "Send" button.
+Click "Send" button.
 </Step>
 </Steps>
 **Result:** PASS/FAIL.
@@ -604,19 +604,19 @@ A new chat is created. Both users can see the chat.
 **Steps:**
 <Steps>
 <Step>
-1. Open the app and navigate to the chat list page.
+Open the app and navigate to the chat list page.
 </Step>
 <Step>
-2. Click the “+” button at the bottom.
+Click the “+” button at the bottom.
 </Step>
 <Step>
-3. Type existing username in the search field.
+Type existing username in the search field.
 </Step>
 <Step>
-4. Choose user.
+Choose user.
 </Step>
 <Step>
-5. Write message and click send.
+Write message and click send.
 </Step>
 </Steps>
 **Result:** PASS/FAIL.
@@ -634,19 +634,19 @@ User sees a new avatar.
 **Steps:**
 <Steps>
 <Step>
-1. Open the app and navigate to the settings page.
+Open the app and navigate to the settings page.
 </Step>
 <Step>
-2. Click “change avatar”.
+Click “change avatar”.
 </Step>
 <Step>
-3. Choose a photo from the gallery or take a new photo.
+Choose a photo from the gallery or take a new photo.
 </Step>
 <Step>
-4. Cut it as you want.
+Cut it as you want.
 </Step>
 <Step>
-5. Click confirm.
+Click confirm.
 </Step>
 </Steps>
 **Result:** PASS/FAIL.
@@ -664,22 +664,22 @@ User sees a success message for 2FA setup.
 **Steps:**
 <Steps>
 <Step>
-1. Open the app and navigate to the settings page.
+Open the app and navigate to the settings page.
 </Step>
 <Step>
-2. Click "Set up 2FA" button.
+Click "Set up 2FA" button.
 </Step>
 <Step>
-3. Copy code from screen.
+Copy code from screen.
 </Step>
 <Step>
-4. Go to Google Authenticator app and paste copied code.
+Go to Google Authenticator app and paste copied code.
 </Step>
 <Step>
-5. Enter additional info for Google Authenticator.
+Enter additional info for Google Authenticator.
 </Step>
 <Step>
-6. Enter an OTP code from Google Authenticator into the app.
+Enter an OTP code from Google Authenticator into the app.
 </Step>
 </Steps>
 **Result:** PASS/FAIL.
@@ -697,19 +697,19 @@ Notifications for the muted chat are disabled.
 **Steps:**
 <Steps>
 <Step>
-1. Open the app and navigate to the chat list.
+Open the app and navigate to the chat list.
 </Step>
 <Step>
-2. Long press on a chat to reveal options.
+Long press on a chat to reveal options.
 </Step>
 <Step>
-3. Select the "Mute Notifications" option.
+Select the "Mute Notifications" option.
 </Step>
 <Step>
-4. Choose a mute duration (e.g., 1 hour, 8 hours, or indefinitely).
+Choose a mute duration (e.g., 1 hour, 8 hours, or indefinitely).
 </Step>
 <Step>
-5. Verify that the chat now shows a muted icon, and notifications are not received.
+Verify that the chat now shows a muted icon, and notifications are not received.
 </Step>
 </Steps>
 **Result:** PASS/FAIL.
@@ -727,28 +727,29 @@ The selected chat is removed from the chat list.
 **Steps:**
 <Steps>
 <Step>
-1. Open the app and navigate to the chat list.
+Open the app and navigate to the chat list.
 </Step>
 <Step>
-2. Long press on the chat to reveal options.
+Long press on the chat to reveal options.
 </Step>
 <Step>
-3. Select "Delete" from the available options.
+Select "Delete" from the available options.
 </Step>
 <Step>
-4. Confirm the deletion in the popup.
+Confirm the deletion in the popup.
 </Step>
 <Step>
-5. Check that the chat no longer appears in the list.
+Check that the chat no longer appears in the list.
 </Step>
 </Steps>
 **Result:** PASS/FAIL.
 
 </Accordion>
+</Accordions>
+
 **Negative tests**
 
-
-
+<Accordions type="multiple">
 <Accordion title="Test 8: Create account with invalid email">
 
 **Input conditions:**
@@ -760,19 +761,19 @@ The app displays an error message: "Invalid email format." The account is not cr
 **Steps:**
 <Steps>
 <Step>
-1. Open the app and navigate to the registration page.
+Open the app and navigate to the registration page.
 </Step>
 <Step>
-2. Enter a valid username and password.
+Enter a valid username and password.
 </Step>
 <Step>
-3. Enter an invalid email (e.g., "usernamedomain").
+Enter an invalid email (e.g., "usernamedomain").
 </Step>
 <Step>
-4. Click the "Sign up" button.
+Click the "Sign up" button.
 </Step>
 <Step>
-5. Read the error message displayed.
+Read the error message displayed.
 </Step>
 </Steps>
 **Result:** PASS/FAIL.
@@ -789,19 +790,19 @@ User sees an error message telling that the inserted file is too big.
 **Steps:**
 <Steps>
 <Step>
-1. Open the app and navigate to the settings page.
+Open the app and navigate to the settings page.
 </Step>
 <Step>
-2. Click "change avatar".
+Click "change avatar".
 </Step>
 <Step>
-3. Choose a photo from the gallery which is too large.
+Choose a photo from the gallery which is too large.
 </Step>
 <Step>
-4. Cut it as you want.
+Cut it as you want.
 </Step>
 <Step>
-5. Click confirm.
+Click confirm.
 </Step>
 </Steps>
 **Result:** PASS/FAIL.
@@ -818,19 +819,19 @@ The app displays an error message: "No internet connection. Message not sent." T
 **Steps:**
 <Steps>
 <Step>
-1. Open the app and navigate to an existing chat.
+Open the app and navigate to an existing chat.
 </Step>
 <Step>
-2. Turn off the internet connection (Wi-Fi and mobile data).
+Turn off the internet connection (Wi-Fi and mobile data).
 </Step>
 <Step>
-3. Type a message in the input field.
+Type a message in the input field.
 </Step>
 <Step>
-4. Click the "Send" button.
+Click the "Send" button.
 </Step>
 <Step>
-5. Observe the error message and verify that the message remains unsent.
+Observe the error message and verify that the message remains unsent.
 </Step>
 </Steps>
 **Result:** PASS/FAIL.
@@ -840,14 +841,14 @@ The app displays an error message: "No internet connection. Message not sent." T
 
 ## Design
 
-<iframe
-    className="card !p-0 overflow-hidden w-full aspect-[4/3]"
-    src="https://embed.figma.com/design/hJzlOgeBylo7UBcMWTZafD/MTAA-2025?node-id=12-40&embed-host=share"
-    allowFullScreen>
-</iframe>
-
 <Card
     title="Link to Figma"
     className="mt-4"
     href="https://www.figma.com/design/hJzlOgeBylo7UBcMWTZafD/MTAA-2025?node-id=12-40&t=JTjvtUcyg47imjuV-1"
 />
+
+<iframe
+    className="card !p-0 overflow-hidden w-full aspect-[4/3]"
+    src="https://embed.figma.com/design/hJzlOgeBylo7UBcMWTZafD/MTAA-2025?node-id=12-40&embed-host=share"
+    allowFullScreen>
+</iframe>
