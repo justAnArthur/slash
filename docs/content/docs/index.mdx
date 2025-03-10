@@ -3,7 +3,6 @@ title: Slash
 description: Cross-platform application JUST for messaging.
 ---
 
-
 ## Introduction
 
 Chat – a simple word for a simple app. No nuclear collider of pointless, useless features here. As a developer who thinks WordPress is shit and would rather build something fresh from the ground several times, I wanted an app that’s as straightforward as its name.
@@ -529,219 +528,170 @@ flowchart LR
 
 ### UATs
 
-## Positive Tests
+**Positive tests**
 
-### Test 1: Create New Account
+**Test 1:** Create new account
 
-**Input Conditions**
-- User has an internet connection.
-- User provides a valid email, username, and password.
-- Password meets security requirements (e.g., length, special characters).
+**Input conditions:**
+User has an internet connection. User provides a valid email, username, and password. Password meets security requirements (e.g., length, special characters).
 
-**Output Conditions**
-- User receives a success message.
-- User is redirected to the chat list page.
+**Output conditions:**
+User receives a success message. User is redirected to the chat list page.
 
-**Steps**
+**Steps:**
 1. Open the app and navigate to the registration page.
 2. Enter a valid email, username, and password.
 3. Click the "Continue" button.
 4. Add profile description and avatar.
 5. Click "Sign Up".
+**Result:** PASS/FAIL.
 
-**Result**: PASS/FAIL
+**Test 2**: Send message with geolocation
 
----
+**Input conditions:**
+User has an internet connection. User is logged in. User has a chat with another user.
 
-### Test 2: Send Message with Geolocation
+**Output conditions:**
+Message with geolocation is sent.
 
-**Input Conditions**
-- User has an internet connection.
-- User is logged in.
-- User has a chat with another user.
-
-**Output Conditions**
-- Message with geolocation is sent.
-
-**Steps**
-1. Open the app and navigate to an existing chat.
-2. Click the "Attachments" button.
-3. Click the "Geolocation" button.
+**Steps:**
+1. Open the app and navigate to the existing chat.
+2. Click "Attachments" button.
+3. Click "Geolocation" button.
 4. Allow location permissions if prompted.
-5. Click the "Send" button.
+5. Click "Send" button.
+**Result:** PASS/FAIL.
 
-**Result**: PASS/FAIL
+**Test 3:** Create new chat
 
----
+**Input conditions**:
+User has an internet connection. User is logged in. User knows another username.
 
-### Test 3: Create New Chat
+**Output conditions:**
+A new chat is created. Both users can see the chat.
 
-**Input Conditions**
-- User has an internet connection.
-- User is logged in.
-- User knows another username.
-
-**Output Conditions**
-- A new chat is created.
-- Both users can see the chat.
-
-**Steps**
+**Steps:**
 1. Open the app and navigate to the chat list page.
 2. Click the “+” button at the bottom.
-3. Type an existing username in the search field.
-4. Choose the user.
-5. Write a message and click send.
+3. Type existing username in the search field.
+4. Choose user.
+5. Write message and click send.
+**Result:** PASS/FAIL.
 
-**Result**: PASS/FAIL
+**Test 4:** Change user avatar
 
----
+**Input conditions:**
+User has an internet connection. User is logged in.
 
-### Test 4: Change User Avatar
+**Output conditions:**
+User sees a new avatar.
 
-**Input Conditions**
-- User has an internet connection.
-- User is logged in.
-
-**Output Conditions**
-- User sees a new avatar.
-
-**Steps**
+**Steps:**
 1. Open the app and navigate to the settings page.
-2. Click "Change Avatar".
+2. Click “change avatar”.
 3. Choose a photo from the gallery or take a new photo.
-4. Cut it as desired.
-5. Click "Confirm".
+4. Cut it as you want.
+5. Click confirm.
+**Result:** PASS/FAIL.
 
-**Result**: PASS/FAIL
+**Test 5:** Set up 2FA with Google Authenticator
 
----
+**Input conditions:**
+User has an internet connection. User is logged in. User has Google Authenticator.
 
-### Test 5: Set Up 2FA with Google Authenticator
+**Output conditions:**
+User sees a success message for 2FA setup.
 
-**Input Conditions**
-- User has an internet connection.
-- User is logged in.
-- User has Google Authenticator.
-
-**Output Conditions**
-- User sees a success message for 2FA setup.
-
-**Steps**
+**Steps:**
 1. Open the app and navigate to the settings page.
-2. Click "Setup 2FA" button.
-3. Copy the code from the screen.
-4. Go to the Google Authenticator app and paste the copied code.
+2. Click "Set up 2FA" button.
+3. Copy code from screen.
+4. Go to Google Authenticator app and paste copied code.
 5. Enter additional info for Google Authenticator.
 6. Enter an OTP code from Google Authenticator into the app.
+**Result:** PASS/FAIL.
 
-**Result**: PASS/FAIL
+**Test 6:** Mute chat notifications
 
----
+**Input conditions:**
+User has an internet connection. User is logged in. User has at least one active chat.
 
-### Test 6: Mute Chat Notifications
+**Output conditions:**
+Notifications for the muted chat are disabled.
 
-**Input Conditions**
-- User has an internet connection.
-- User is logged in.
-- User has at least one active chat.
-
-**Output Conditions**
-- Notifications for the muted chat are disabled.
-
-**Steps**
+**Steps:**
 1. Open the app and navigate to the chat list.
 2. Long press on a chat to reveal options.
 3. Select the "Mute Notifications" option.
 4. Choose a mute duration (e.g., 1 hour, 8 hours, or indefinitely).
 5. Verify that the chat now shows a muted icon, and notifications are not received.
+**Result:** PASS/FAIL.
 
-**Result**: PASS/FAIL
+**Test 7:** Delete a chat
 
----
+**Input conditions:**
+User has an internet connection. User is logged in. User has at least one chat in the chat list.
 
-### Test 7: Delete a Chat
+**Output conditions:**
+The selected chat is removed from the chat list.
 
-**Input Conditions**
-- User has an internet connection.
-- User is logged in.
-- User has at least one chat in the chat list.
-
-**Output Conditions**
-- The selected chat is removed from the chat list.
-
-**Steps**
+**Steps:**
 1. Open the app and navigate to the chat list.
 2. Long press on the chat to reveal options.
 3. Select "Delete" from the available options.
 4. Confirm the deletion in the popup.
 5. Check that the chat no longer appears in the list.
+**Result:** PASS/FAIL.
 
-**Result**: PASS/FAIL
+**Negative tests**
 
----
+**Test 8:** Create account with invalid email
 
-## Negative Tests
+**Input conditions:**
+User has an internet connection. User enters an incorrectly formatted email (e.g., "userexample.com").
 
-### Test 8: Create Account with Invalid Email
+**Output conditions:**
+The app displays an error message: "Invalid email format." The account is not created, and the user is not redirected.
 
-**Input Conditions**
-- User has an internet connection.
-- User enters an incorrectly formatted email (e.g., "userexample.com").
-
-**Output Conditions**
-- The app displays an error message: "Invalid email format."
-- The account is not created and the user is not redirected.
-
-**Steps**
+**Steps:**
 1. Open the app and navigate to the registration page.
 2. Enter a valid username and password.
 3. Enter an invalid email (e.g., "usernamedomain").
-4. Click the "Sign Up" button.
+4. Click the "Sign up" button.
 5. Read the error message displayed.
+**Result:** PASS/FAIL.
 
-**Result**: PASS/FAIL
+**Test 9:** Change user avatar with too large file (1MB+)
 
----
+**Input conditions:**
+User has an internet connection. User is logged in.
 
-### Test 9: Change User Avatar with Too Large File (1MB+)
+**Output conditions:**
+User sees an error message telling that the inserted file is too big.
 
-**Input Conditions**
-- User has an internet connection.
-- User is logged in.
-
-**Output Conditions**
-- User sees an error message telling that the inserted file is too big.
-
-**Steps**
+**Steps:**
 1. Open the app and navigate to the settings page.
-2. Click "Change Avatar".
-3. Choose a photo from the gallery that is too large.
-4. Cut it as desired.
-5. Click "Confirm".
+2. Click "change avatar".
+3. Choose a photo from the gallery which is too large.
+4. Cut it as you want.
+5. Click confirm.
+**Result:** PASS/FAIL.
 
-**Result**: PASS/FAIL
+**Test 10:** Send message without internet
 
----
+**Input conditions:**
+User has no internet connection. User is logged in. User has an existing chat.
 
-### Test 10: Send Message Without Internet
+**Output conditions:**
+The app displays an error message: "No internet connection. Message not sent." The message is not delivered.
 
-**Input Conditions**
-- User has no internet connection.
-- User is logged in.
-- User has an existing chat.
-
-**Output Conditions**
-- The app displays an error message: "No internet connection. Message not sent."
-- The message is not delivered.
-
-**Steps**
+**Steps:**
 1. Open the app and navigate to an existing chat.
 2. Turn off the internet connection (Wi-Fi and mobile data).
 3. Type a message in the input field.
 4. Click the "Send" button.
 5. Observe the error message and verify that the message remains unsent.
-
-**Result**: PASS/FAIL
+**Result:** PASS/FAIL.
 
 
 ## Design
