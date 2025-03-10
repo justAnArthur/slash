@@ -3,6 +3,9 @@ title: Slash
 description: Cross-platform application JUST for messaging.
 ---
 
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
 ## Introduction
 
 Chat – a simple word for a simple app. No nuclear collider of pointless, useless features here. As a developer who thinks WordPress is shit and would rather build something fresh from the ground several times, I wanted an app that’s as straightforward as its name.
@@ -377,10 +380,11 @@ Primary, production target is **Linux**, and developing include **Windows**.
 TODO
 
 ### UATs
-
+<Accordions>
 **Positive tests**
 
-**Test 1:** Create new account
+<Accordion title="Test 1: Create new account">
+
 
 **Input conditions:**
 User has an internet connection. User provides a valid email, username, and password. Password meets security requirements (e.g., length, special characters).
@@ -389,14 +393,27 @@ User has an internet connection. User provides a valid email, username, and pass
 User receives a success message. User is redirected to the chat list page.
 
 **Steps:**
-1. Open the app and navigate to the registration page.
-2. Enter a valid email, username, and password.
-3. Click the "Continue" button.
-4. Add profile description and avatar.
-5. Click "Sign Up".
+<Steps>
+<Step>
+Open the app and navigate to the registration page.
+</Step>
+<Step>
+Enter a valid email, username, and password.
+</Step>
+<Step>
+Click the "Continue" button.
+</Step>
+<Step>
+Add profile description and avatar.
+</Step>
+<Step>
+Click "Sign Up".
+</Step>
+</Steps>
 **Result:** PASS/FAIL.
+</Accordion>
+<Accordion title="Test 2: Send message with geolocation">
 
-**Test 2**: Send message with geolocation
 
 **Input conditions:**
 User has an internet connection. User is logged in. User has a chat with another user.
@@ -405,12 +422,26 @@ User has an internet connection. User is logged in. User has a chat with another
 Message with geolocation is sent.
 
 **Steps:**
+<Steps>
+<Step>
 1. Open the app and navigate to the existing chat.
+</Step>
+<Step>
 2. Click "Attachments" button.
+</Step>
+<Step>
 3. Click "Geolocation" button.
+</Step>
+<Step>
 4. Allow location permissions if prompted.
+</Step>
+<Step>
 5. Click "Send" button.
+</Step>
+</Steps>
 **Result:** PASS/FAIL.
+</Accordion>
+<Accordion title="Test 3: Create new chat">
 
 **Test 3:** Create new chat
 
@@ -421,12 +452,26 @@ User has an internet connection. User is logged in. User knows another username.
 A new chat is created. Both users can see the chat.
 
 **Steps:**
+<Steps>
+<Step>
 1. Open the app and navigate to the chat list page.
+</Step>
+<Step>
 2. Click the “+” button at the bottom.
+</Step>
+<Step>
 3. Type existing username in the search field.
+</Step>
+<Step>
 4. Choose user.
+</Step>
+<Step>
 5. Write message and click send.
+</Step>
+</Steps>
 **Result:** PASS/FAIL.
+</Accordion>
+<Accordion title="Test 4: Change user avatar">
 
 **Test 4:** Change user avatar
 
@@ -437,12 +482,26 @@ User has an internet connection. User is logged in.
 User sees a new avatar.
 
 **Steps:**
+<Steps>
+<Step>
 1. Open the app and navigate to the settings page.
+</Step>
+<Step>
 2. Click “change avatar”.
+</Step>
+<Step>
 3. Choose a photo from the gallery or take a new photo.
+</Step>
+<Step>
 4. Cut it as you want.
+</Step>
+<Step>
 5. Click confirm.
+</Step>
+</Steps>
 **Result:** PASS/FAIL.
+</Accordion>
+<Accordion title="Test 5: Set up 2FA with Google Authenticator">
 
 **Test 5:** Set up 2FA with Google Authenticator
 
@@ -453,13 +512,29 @@ User has an internet connection. User is logged in. User has Google Authenticato
 User sees a success message for 2FA setup.
 
 **Steps:**
+<Steps>
+<Step>
 1. Open the app and navigate to the settings page.
+</Step>
+<Step>
 2. Click "Set up 2FA" button.
+</Step>
+<Step>
 3. Copy code from screen.
+</Step>
+<Step>
 4. Go to Google Authenticator app and paste copied code.
+</Step>
+<Step>
 5. Enter additional info for Google Authenticator.
+</Step>
+<Step>
 6. Enter an OTP code from Google Authenticator into the app.
+</Step>
+</Steps>
 **Result:** PASS/FAIL.
+</Accordion>
+<Accordion title="Test 6: Mute chat notifications">
 
 **Test 6:** Mute chat notifications
 
@@ -470,12 +545,26 @@ User has an internet connection. User is logged in. User has at least one active
 Notifications for the muted chat are disabled.
 
 **Steps:**
+<Steps>
+<Step>
 1. Open the app and navigate to the chat list.
+</Step>
+<Step>
 2. Long press on a chat to reveal options.
+</Step>
+<Step>
 3. Select the "Mute Notifications" option.
+</Step>
+<Step>
 4. Choose a mute duration (e.g., 1 hour, 8 hours, or indefinitely).
+</Step>
+<Step>
 5. Verify that the chat now shows a muted icon, and notifications are not received.
+</Step>
+</Steps>
 **Result:** PASS/FAIL.
+</Accordion>
+<Accordion title="Test 7: Delete a chat">
 
 **Test 7:** Delete a chat
 
@@ -486,16 +575,31 @@ User has an internet connection. User is logged in. User has at least one chat i
 The selected chat is removed from the chat list.
 
 **Steps:**
+<Steps>
+<Step>
 1. Open the app and navigate to the chat list.
+</Step>
+<Step>
 2. Long press on the chat to reveal options.
+</Step>
+<Step>
 3. Select "Delete" from the available options.
+</Step>
+<Step>
 4. Confirm the deletion in the popup.
+</Step>
+<Step>
 5. Check that the chat no longer appears in the list.
+</Step>
+</Steps>
 **Result:** PASS/FAIL.
 
+</Accordion>
 **Negative tests**
 
-**Test 8:** Create account with invalid email
+
+
+<Accordion title="Test 8: Create account with invalid email">
 
 **Input conditions:**
 User has an internet connection. User enters an incorrectly formatted email (e.g., "userexample.com").
@@ -504,13 +608,26 @@ User has an internet connection. User enters an incorrectly formatted email (e.g
 The app displays an error message: "Invalid email format." The account is not created, and the user is not redirected.
 
 **Steps:**
+<Steps>
+<Step>
 1. Open the app and navigate to the registration page.
+</Step>
+<Step>
 2. Enter a valid username and password.
+</Step>
+<Step>
 3. Enter an invalid email (e.g., "usernamedomain").
+</Step>
+<Step>
 4. Click the "Sign up" button.
+</Step>
+<Step>
 5. Read the error message displayed.
+</Step>
+</Steps>
 **Result:** PASS/FAIL.
-
+</Accordion>
+<Accordion title="Test 9: Change user avatar with too large file (1MB+)">
 **Test 9:** Change user avatar with too large file (1MB+)
 
 **Input conditions:**
@@ -520,13 +637,26 @@ User has an internet connection. User is logged in.
 User sees an error message telling that the inserted file is too big.
 
 **Steps:**
+<Steps>
+<Step>
 1. Open the app and navigate to the settings page.
+</Step>
+<Step>
 2. Click "change avatar".
+</Step>
+<Step>
 3. Choose a photo from the gallery which is too large.
+</Step>
+<Step>
 4. Cut it as you want.
+</Step>
+<Step>
 5. Click confirm.
+</Step>
+</Steps>
 **Result:** PASS/FAIL.
-
+</Accordion>
+<Accordion title="Test 10: Send message without internet">
 **Test 10:** Send message without internet
 
 **Input conditions:**
@@ -536,12 +666,26 @@ User has no internet connection. User is logged in. User has an existing chat.
 The app displays an error message: "No internet connection. Message not sent." The message is not delivered.
 
 **Steps:**
+<Steps>
+<Step>
 1. Open the app and navigate to an existing chat.
+</Step>
+<Step>
 2. Turn off the internet connection (Wi-Fi and mobile data).
+</Step>
+<Step>
 3. Type a message in the input field.
+</Step>
+<Step>
 4. Click the "Send" button.
+</Step>
+<Step>
 5. Observe the error message and verify that the message remains unsent.
+</Step>
+</Steps>
 **Result:** PASS/FAIL.
+</Accordion>
+</Accordions>
 
 
 ## Design
