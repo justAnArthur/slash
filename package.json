@@ -1,11 +1,7 @@
 {
   "name": "slash",
   "private": true,
-  "workspaces": [
-    "modules/*",
-    "packages/*",
-    "docs"
-  ],
+  "workspaces": ["modules/*", "packages/*", "docs"],
   "scripts": {
     "postinstall": "lefthook install",
     "biome:check": "npx @biomejs/biome check --write --files-ignore-unknown=true --no-errors-on-unmatched"
@@ -17,6 +13,5 @@
   },
   "dependencies": {
     "better-auth": "^1.1.20"
-  },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  }
 }
