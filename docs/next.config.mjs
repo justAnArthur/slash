@@ -10,7 +10,14 @@ const config = {
   },
   typescript: {
     ignoreBuildErrors: true
-  }
+  },
+  redirects: () => [
+    {
+      source: "/",
+      destination: "/docs",
+      permanent: false
+    }
+  ]
 }
 
 export default withMDX(config)
