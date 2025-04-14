@@ -34,5 +34,3 @@ temp/
 # Optional: ignore built artifacts in packages
 **/dist/
 **/build/
-
-/.linked/

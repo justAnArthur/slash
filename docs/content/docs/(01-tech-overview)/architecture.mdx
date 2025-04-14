@@ -1,0 +1,268 @@
+---
+title: Architecture
+description: Overview of the architecture used in the project.
+icon: Blocks
+---
+
+Based on requirements and our experience, we decided to use the following architecture:
+
+```mermaid
+flowchart RL
+  subgraph Clients
+    subgraph Web_Client
+        A[🖥 Web Client]
+        A1["📂 Local Storage DB"]
+        A2["Web browser's APIs"]
+    end
+    subgraph Android_Client
+        B[🤖 Android Client]
+        B1["📂 Local Simple DB (Android)"]
+        B2["Expo APIs"]
+    end
+    subgraph iOS_Client_Optional
+        C["🍏 iOS Client (Optional)"]
+        C1["📂 Local DB (iOS)"]
+        C2["Expo APIs"]
+    end
+  end
+
+  A --> A1
+  B --> B1
+  C --> C1
+  A <--> A2
+  B <--> B2
+  C <--> C2
+
+  subgraph "VPS (Europe)"
+    LB[🛡 Load Balancers]
+    BS[Bun Server Node]
+
+    DB[(🗄️ Postgres DB)]
+  end
+
+  A -- "Sync / Send Messages" --> LB
+  B -- "Sync / Send Messages" --> LB
+  C -- "Sync / Send Messages" --> LB
+
+  LB --> BS
+
+  BS -- "Persistent Data Ops" --> DB
+```
+
+## Database Architecture
+
+### Entity-Relationship diagram
+
+```mermaid
+erDiagram
+    USER {
+      text id PK
+      text name
+      text email
+      integer emailVerified
+      text image
+      text bio
+      integer twoFactorEnabled
+      integer createdAt
+      integer updatedAt
+    }
+
+    SESSION {
+      text id PK
+      text userId FK
+      text token
+      integer expiresAt
+      text ipAddress
+      text userAgent
+      integer createdAt
+      integer updatedAt
+    }
+
+    ACCOUNT {
+      text id PK
+      text userId FK
+      text accountId
+      text providerId
+      text accessToken
+      text refreshToken
+      integer accessTokenExpiresAt
+      integer refreshTokenExpiresAt
+      text scope
+      text password
+      integer createdAt
+      integer updatedAt
+    }
+
+    TWOFACTOR {
+      text id PK
+      text userId FK
+      text secret
+      text backupCodes
+    }
+
+    VERIFICATION {
+      text id PK
+      text identifier
+      text value
+      integer expiresAt
+      integer createdAt
+      integer updatedAt
+    }
+
+    FILE {
+      text id PK
+      text path
+    }
+
+    MESSAGE {
+      text id PK
+      integer createdAt
+      text senderId FK
+      text chatId FK
+      text type
+      text content
+    }
+
+    MESSAGE_ATTACHMENT {
+      text id PK
+      text messageId FK
+      text IMAGEFileId FK
+      text JSON
+    }
+
+    CHAT {
+      text id PK
+      text type
+      text name
+      integer createdAt
+    }
+
+    CHAT_USER {
+      text chatId FK
+      text userId FK
+      text role
+      integer pinned
+    }
+
+    %% Relationships
+    USER ||--o{ SESSION : "has"
+    USER ||--o{ ACCOUNT : "owns"
+    USER ||--o{ TWOFACTOR : "has"
+    USER ||--o{ MESSAGE : "sends"
+    USER ||--o{ CHAT_USER : "participates in"
+
+    CHAT ||--o{ MESSAGE : "contains"
+    CHAT ||--o{ CHAT_USER : "includes"
+
+    MESSAGE ||--o{ MESSAGE_ATTACHMENT : "has"
+    FILE ||--o{ MESSAGE_ATTACHMENT : "attached as"
+
+    %% Message also belongs to a Chat
+    MESSAGE }o--|| CHAT : "belongs to"
+```
+
+### Class diagram
+
+```mermaid
+classDiagram
+    class User {
+      +string id
+      +string name
+      +string email
+      +boolean emailVerified
+      +string image
+      +string bio
+      +boolean twoFactorEnabled
+      +Date createdAt
+      +Date updatedAt
+    }
+
+    class Session {
+      +string id
+      +string userId
+      +string token
+      +Date expiresAt
+      +string ipAddress
+      +string userAgent
+      +Date createdAt
+      +Date updatedAt
+    }
+
+    class Account {
+      +string id
+      +string userId
+      +string accountId
+      +string providerId
+      +string accessToken
+      +string refreshToken
+      +Date accessTokenExpiresAt
+      +Date refreshTokenExpiresAt
+      +string scope
+      +string password
+      +Date createdAt
+      +Date updatedAt
+    }
+
+    class TwoFactor {
+      +string id
+      +string userId
+      +string secret
+      +string backupCodes
+    }
+
+    class Verification {
+      +string id
+      +string identifier
+      +string value
+      +Date expiresAt
+      +Date createdAt
+      +Date updatedAt
+    }
+
+    class File {
+      +string id
+      +string path
+    }
+
+    class Message {
+      +string id
+      +Date createdAt
+      +string senderId
+      +string chatId
+      +string type
+      +string content
+    }
+
+    class MessageAttachment {
+      +string id
+      +string messageId
+      +string IMAGEFileId
+      +string JSON
+    }
+
+    class Chat {
+      +string id
+      +string type
+      +string name
+      +Date createdAt
+    }
+
+    class ChatUser {
+      +string chatId
+      +string userId
+      +string role
+      +boolean pinned
+    }
+
+    %% Associations
+    Session --> User : "belongs to"
+    Account --> User : "belongs to"
+    TwoFactor --> User : "belongs to"
+    Message --> User : "sent by"
+    Message --> Chat : "in"
+    ChatUser --> Chat : "for chat"
+    ChatUser --> User : "for user"
+    MessageAttachment --> Message : "attached to"
+    MessageAttachment --> File : "references"
+
+```
