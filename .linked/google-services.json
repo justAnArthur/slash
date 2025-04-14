@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:536351669495:android:643823a43ee7be5ccb27f2",
+        "mobilesdk_app_id": "1:536351669495:android:590988eceec9188ccb27f2",
         "android_client_info": {
-          "package_name": "just.slash.mobile"
+          "package_name": "com.justanarthur.slashmobile"
         }
       },
       "oauth_client": [],
