@@ -2,6 +2,7 @@ import { ThemedButton } from "@/components/ui/ThemedButton"
 import { ThemedModal } from "@/components/ui/ThemedModal"
 import { ThemedText } from "@/components/ui/ThemedText"
 import { ThemedView } from "@/components/ui/ThemedView"
+import { useI18nT } from "@/lib/i18n/Context"
 import type React from "react"
 import { StyleSheet, View } from "react-native"
 
@@ -18,13 +19,14 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   onConfirm,
   onCancel
 }) => {
+  const t = useI18nT("common")
   return (
     <ThemedModal visible={visible} onRequestClose={onCancel}>
       <View style={styles.container}>
         <ThemedText>{title}</ThemedText>
         <ThemedView style={styles.buttonContainer}>
-          <ThemedButton title="Cancel" onPress={onCancel} />
-          <ThemedButton title="Delete" onPress={onConfirm} />
+          <ThemedButton title={t("cancel")} onPress={onCancel} />
+          <ThemedButton title={t("ok")} onPress={onConfirm} />
         </ThemedView>
       </View>
     </ThemedModal>

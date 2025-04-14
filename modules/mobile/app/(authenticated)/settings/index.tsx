@@ -1,5 +1,6 @@
 import { Collapsible } from "@/components/Collapsible"
 import { UpdateUserInfo } from "@/components/screens/common/UpdateUserInfo"
+import TOTPSetup from "@/components/screens/totp/TOTPSetup"
 import { ThemedButton } from "@/components/ui/ThemedButton"
 import { ThemedText } from "@/components/ui/ThemedText"
 import { ThemedView } from "@/components/ui/ThemedView"
@@ -11,7 +12,7 @@ import { useRouter } from "expo-router"
 import { useState } from "react"
 import { ScrollView, StyleSheet } from "react-native"
 
-export default function SettingsScreen() {
+export default function SettingsModal() {
   const t = useI18nT("screens.settings")
 
   return (
@@ -23,7 +24,9 @@ export default function SettingsScreen() {
 
         <Collapsible title="Profile">
           <UpdateUserInfo />
-          <LogOutButton />
+        </Collapsible>
+        <Collapsible title="2-FA">
+          <TOTPSetup />
         </Collapsible>
         <Collapsible title="i18n">
           <LanguageSwitcher />
@@ -32,6 +35,7 @@ export default function SettingsScreen() {
           <ThemeSwitcher />
           {/*<ContrastSwitcher />*/}
         </Collapsible>
+        <LogOutButton />
       </ScrollView>
     </ThemedView>
   )
@@ -52,7 +56,6 @@ function LogOutButton() {
       fetchOptions: {
         onSuccess: () => {
           // setLoading(false)
-          // @ts-ignore
           router.replace("/sign-in")
         },
         onError: () => {

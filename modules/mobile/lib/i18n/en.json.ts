@@ -3,6 +3,8 @@ const en = {
 
   common: {
     error: "Error",
+    ok: "Ok",
+    cancel: "Cancel",
     locales: {
       current: "Current locale is: ",
       en: "English",
@@ -77,6 +79,29 @@ const en = {
     settings: {
       title: "Settings",
       logOut: "Log Out"
+    },
+    totp: {
+      setup: "Setup 2-FA",
+      "2fa": "Two-Factor Authentication",
+      backup_codes:
+        "Save backup codes, you can use them in case if you lose your device",
+      enter_password: "Enter your password to continue",
+      setup_in_app: "Click button to set up TOTP in an Authenticator app",
+      click_me: "Click me!",
+      enter_code: "Enter the 6-digit code from your authenticator app",
+      verify: "Verify",
+      error: {
+        code: "Invalid code entered",
+        verify: "Failed to verify. Please try again."
+      },
+      already: "Two-factor authentication already set!",
+      turn_off: "Turn off",
+      back: "Back",
+      finish: "Finish",
+      copy_all: "Copy",
+      copied: "Copied!",
+      save_codes_warning:
+        "Make sure to save those codes, you won't see them again."
     }
   }
 }

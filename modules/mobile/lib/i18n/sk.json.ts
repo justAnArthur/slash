@@ -5,6 +5,8 @@ const sk: Translations = {
 
   common: {
     error: "Chyba",
+    ok: "Ok",
+    cancel: "Zrušiť",
     locales: {
       current: "Aktuálny jazyk: ",
       en: "Angličtina",
@@ -79,6 +81,30 @@ const sk: Translations = {
     settings: {
       title: "Nastavenia",
       logOut: "Odhlásiť sa"
+    },
+    totp: {
+      setup: "Nastaviť TOTP",
+
+      "2fa": "Dvojfaktorová Autentifikácia",
+      backup_codes:
+        "Uložte záložné kódy, môžete ich použiť v prípade straty zariadenia",
+      setup_in_app:
+        "Kliknutím na tlačidlo nastavíte TOTP v aplikácii Authenticator",
+      click_me: "Klikni na mňa!",
+      enter_password: "Pre pokračovanie zadajte svoje heslo",
+      enter_code: "Zadajte TOTP kód",
+      verify: "Overiť TOTP",
+      error: {
+        code: "Prosím, zadajte TOTP kód.",
+        verify: "Overenie TOTP zlyhalo. Skúste to znova."
+      },
+      already: "Dvojfaktorová autentifikácia je už nastavená!",
+      turn_off: "Vypnúť",
+      back: "Späť",
+      finish: "Ukončiť",
+      copy_all: "Kopírovať",
+      copied: "Skopírované!",
+      save_codes_warning: "Nezabudnite tieto kódy uložiť, už ich neuvidíte."
     }
   }
 }

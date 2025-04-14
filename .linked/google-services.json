@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "536351669495",
+    "project_id": "slash-mobile-c14a0",
+    "storage_bucket": "slash-mobile-c14a0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536351669495:android:643823a43ee7be5ccb27f2",
+        "android_client_info": {
+          "package_name": "just.slash.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ5eQ_PiyPWdt9YY3lxkg60AC3Z_yQo0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

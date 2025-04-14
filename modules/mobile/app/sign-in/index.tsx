@@ -25,17 +25,23 @@ export default function SignInScreen() {
   const handleSignIn = async () => {
     setLoading(true)
 
-    const res = await authClient.signIn.email({
-      email,
-      password
-    })
-
-    console.log("res", res)
+    const res = await authClient.signIn.email(
+      {
+        email,
+        password
+      },
+      {
+        async onSuccess(context) {
+          if (context.data.twoFactorRedirect) {
+            router.replace("/sign-in/2fa")
+          } else {
+            router.replace("/")
+          }
+        }
+      }
+    )
 
     if (res.error) setError(JSON.stringify(res.error))
-    else router.replace("/")
-
-    setLoading(false)
   }
 
   return (
