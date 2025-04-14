@@ -1,12 +1,7 @@
 import { source } from "@/lib/source"
 import defaultMdxComponents from "fumadocs-ui/mdx"
-import {
-  DocsBody,
-  DocsDescription,
-  DocsPage,
-  DocsTitle
-} from "fumadocs-ui/page"
 import { notFound } from "next/navigation"
+import { DocsPageClient } from "@/app/docs/[[...slug]]/docs-page.client"
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>
@@ -18,18 +13,16 @@ export default async function Page(props: {
   const MDX = page.data.body
 
   return (
-    <DocsPage
+    <DocsPageClient
       toc={page.data.toc}
       full={page.data.full}
       footer={{ enabled: true }}
+      title={page.data.title}
+      description={page.data.description}
     >
-      <DocsTitle>{page.data.title}</DocsTitle>
-      <DocsDescription>{page.data.description}</DocsDescription>
-      <DocsBody>
-        {/*@ts-ignore*/}
-        <MDX components={{ ...defaultMdxComponents }} />
-      </DocsBody>
-    </DocsPage>
+      {/*@ts-ignore*/}
+      <MDX components={{ ...defaultMdxComponents }} />
+    </DocsPageClient>
   )
 }
 
