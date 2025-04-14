@@ -59,21 +59,23 @@ erDiagram
       text id PK
       text name
       text email
-      boolean emailVerified
+      integer emailVerified
       text image
-      timestamp createdAt
-      timestamp updatedAt
+      text bio
+      integer twoFactorEnabled
+      integer createdAt
+      integer updatedAt
     }
 
     SESSION {
       text id PK
       text userId FK
       text token
-      timestamp expiresAt
+      integer expiresAt
       text ipAddress
       text userAgent
-      timestamp createdAt
-      timestamp updatedAt
+      integer createdAt
+      integer updatedAt
     }
 
     ACCOUNT {
@@ -83,60 +85,80 @@ erDiagram
       text providerId
       text accessToken
       text refreshToken
-      timestamp accessTokenExpiresAt
-      timestamp refreshTokenExpiresAt
+      integer accessTokenExpiresAt
+      integer refreshTokenExpiresAt
       text scope
       text password
-      timestamp createdAt
-      timestamp updatedAt
+      integer createdAt
+      integer updatedAt
+    }
+
+    TWOFACTOR {
+      text id PK
+      text userId FK
+      text secret
+      text backupCodes
     }
 
     VERIFICATION {
       text id PK
       text identifier
       text value
-      timestamp expiresAt
-      timestamp createdAt
-      timestamp updatedAt
+      integer expiresAt
+      integer createdAt
+      integer updatedAt
     }
 
-    PRIVATE_CHAT {
+    FILE {
       text id PK
-      text user1Id FK
-      text user2Id FK
-    }
-
-    GROUP_CHAT {
-      text id PK
-      text name
-      text createdBy FK
-      timestamp createdAt
-    }
-
-    GROUP_CHAT_MEMBER {
-      text id PK
-      text groupChatId FK
-      text userId FK
-      timestamp joinedAt
+      text path
     }
 
     MESSAGE {
       text id PK
-      timestamp createdAt
+      integer createdAt
       text senderId FK
-      text chatId FK "can reference PRIVATE_CHAT.id or GROUP_CHAT.id"
-      text content
+      text chatId FK
       text type
+      text content
+    }
+
+    MESSAGE_ATTACHMENT {
+      text id PK
+      text messageId FK
+      text IMAGEFileId FK
+      text JSON
+    }
+
+    CHAT {
+      text id PK
+      text type
+      text name
+      integer createdAt
+    }
+
+    CHAT_USER {
+      text chatId FK
+      text userId FK
+      text role
+      integer pinned
     }
 
     %% Relationships
-    SESSION ||--|| USER : "belongs to"
-    ACCOUNT ||--|| USER : "belongs to"
-    PRIVATE_CHAT }|..|{ USER : "user1Id, user2Id"
-    GROUP_CHAT }|..|| USER : "createdBy"
-    GROUP_CHAT_MEMBER }|--|| GROUP_CHAT : "member of"
-    GROUP_CHAT_MEMBER }|--|| USER : "member"
-    MESSAGE }|--|| USER : "sender"
+    USER ||--o{ SESSION : "has"
+    USER ||--o{ ACCOUNT : "owns"
+    USER ||--o{ TWOFACTOR : "has"
+    USER ||--o{ MESSAGE : "sends"
+    USER ||--o{ CHAT_USER : "participates in"
+
+    CHAT ||--o{ MESSAGE : "contains"
+    CHAT ||--o{ CHAT_USER : "includes"
+
+    MESSAGE ||--o{ MESSAGE_ATTACHMENT : "has"
+    FILE ||--o{ MESSAGE_ATTACHMENT : "attached as"
+
+    %% Message also belongs to a Chat
+    MESSAGE }o--|| CHAT : "belongs to"
 ```
 
 ### Class diagram
@@ -144,95 +166,103 @@ erDiagram
 ```mermaid
 classDiagram
     class User {
-      <<entity>>
-      - id: text
-      - name: text
-      - email: text
-      - emailVerified: boolean
-      - image: text
-      - createdAt: timestamp
-      - updatedAt: timestamp
+      +string id
+      +string name
+      +string email
+      +boolean emailVerified
+      +string image
+      +string bio
+      +boolean twoFactorEnabled
+      +Date createdAt
+      +Date updatedAt
     }
 
     class Session {
-      <<entity>>
-      - id: text
-      - userId: text
-      - token: text
-      - expiresAt: timestamp
-      - ipAddress: text
-      - userAgent: text
-      - createdAt: timestamp
-      - updatedAt: timestamp
+      +string id
+      +string userId
+      +string token
+      +Date expiresAt
+      +string ipAddress
+      +string userAgent
+      +Date createdAt
+      +Date updatedAt
     }
 
     class Account {
-      <<entity>>
-      - id: text
-      - userId: text
-      - accountId: text
-      - providerId: text
-      - accessToken: text
-      - refreshToken: text
-      - accessTokenExpiresAt: timestamp
-      - refreshTokenExpiresAt: timestamp
-      - scope: text
-      - password: text
-      - createdAt: timestamp
-      - updatedAt: timestamp
+      +string id
+      +string userId
+      +string accountId
+      +string providerId
+      +string accessToken
+      +string refreshToken
+      +Date accessTokenExpiresAt
+      +Date refreshTokenExpiresAt
+      +string scope
+      +string password
+      +Date createdAt
+      +Date updatedAt
+    }
+
+    class TwoFactor {
+      +string id
+      +string userId
+      +string secret
+      +string backupCodes
     }
 
     class Verification {
-      <<entity>>
-      - id: text
-      - identifier: text
-      - value: text
-      - expiresAt: timestamp
-      - createdAt: timestamp
-      - updatedAt: timestamp
+      +string id
+      +string identifier
+      +string value
+      +Date expiresAt
+      +Date createdAt
+      +Date updatedAt
     }
 
-    class PrivateChat {
-      <<entity>>
-      - id: text
-      - user1Id: text
-      - user2Id: text
-    }
-
-    class GroupChat {
-      <<entity>>
-      - id: text
-      - name: text
-      - createdBy: text
-      - createdAt: timestamp
-    }
-
-    class GroupChatMember {
-      <<entity>>
-      - id: text
-      - groupChatId: text
-      - userId: text
-      - joinedAt: timestamp
+    class File {
+      +string id
+      +string path
     }
 
     class Message {
-      <<entity>>
-      - id: text
-      - createdAt: timestamp
-      - senderId: text
-      - chatId: text  "references PrivateChat OR GroupChat"
-      - content: text
-      - type: text    "e.g., TEXT, IMAGE, GPS"
+      +string id
+      +Date createdAt
+      +string senderId
+      +string chatId
+      +string type
+      +string content
+    }
+
+    class MessageAttachment {
+      +string id
+      +string messageId
+      +string IMAGEFileId
+      +string JSON
+    }
+
+    class Chat {
+      +string id
+      +string type
+      +string name
+      +Date createdAt
+    }
+
+    class ChatUser {
+      +string chatId
+      +string userId
+      +string role
+      +boolean pinned
     }
 
     %% Associations
-    Session --> User : userId
-    Account --> User : userId
-    PrivateChat --> User : user1Id
-    PrivateChat --> User : user2Id
-    GroupChat --> User : createdBy
-    GroupChatMember --> GroupChat : groupChatId
-    GroupChatMember --> User : userId
-    Message --> User : senderId
-    %% Note: Message.chatId may refer to either a PrivateChat or a GroupChat
+    Session --> User : "belongs to"
+    Account --> User : "belongs to"
+    TwoFactor --> User : "belongs to"
+    Message --> User : "sent by"
+    Message --> Chat : "in"
+    ChatUser --> Chat : "for chat"
+    ChatUser --> User : "for user"
+    MessageAttachment --> Message : "attached to"
+    MessageAttachment --> File : "references"
+
 ```
