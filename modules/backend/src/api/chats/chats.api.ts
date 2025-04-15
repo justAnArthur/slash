@@ -7,7 +7,7 @@ import {
   subscribeUsersToChat,
   unsubscribeAllFromChat,
   unsubscribeUserFromChat
-} from "@/src/lib/chat.state"
+} from "@/src/api/chats/chats.state"
 import { and, count, desc, eq, exists, inArray, ne, sql } from "drizzle-orm"
 import Elysia, { type Context, t } from "elysia"
 import type {
@@ -28,68 +28,67 @@ export default new Elysia({ prefix: "/chats" })
     "/",
     async ({
       body,
-      request
+      request,
+      error
     }: {
       body: CreateChatRequest
-      request: Context["request"]
-    }) => {
-      try {
-        const session = await checkAndGetSession(request.headers)
-        const userId = session.user.id as string
-        const { userIds, name } = body
+    } & Context) => {
+      const session = await checkAndGetSession(request.headers)
+      const userId = session.user.id as string
+      const { userIds, name } = body
 
-        const chatType = (
-          userIds.length === 1 ? "private" : "group"
-        ) as ChatType
+      const chatType = (userIds.length === 1 ? "private" : "group") as ChatType
 
-        if (chatType === "private") {
-          const [existingChat] = await db
-            .select()
-            .from(chat)
-            .innerJoin(chatUser, eq(chat.id, chatUser.chatId))
-            .where(
-              and(
-                eq(chat.type, "private"),
-                inArray(chatUser.userId, [userId, userIds[0]]),
-                exists(
-                  db
-                    .select({ count: count() })
-                    .from(chatUser)
-                    .where(
-                      and(
-                        eq(chatUser.chatId, chat.id),
-                        inArray(chatUser.userId, [userId, userIds[0]])
-                      )
+      if (chatType === "private") {
+        const [existingChat] = await db
+          .select()
+          .from(chat)
+          .innerJoin(chatUser, eq(chat.id, chatUser.chatId))
+          .where(
+            and(
+              eq(chat.type, "private"),
+              inArray(chatUser.userId, [userId, userIds[0]]),
+              exists(
+                db
+                  .select({ count: count() })
+                  .from(chatUser)
+                  .where(
+                    and(
+                      eq(chatUser.chatId, chat.id),
+                      inArray(chatUser.userId, [userId, userIds[0]])
                     )
-                    .groupBy(chatUser.chatId)
-                    .having(eq(count(), 2))
-                )
+                  )
+                  .groupBy(chatUser.chatId)
+                  .having(eq(count(), 2))
               )
             )
-            .limit(1)
+          )
+          .limit(1)
 
-          if (existingChat) return { chatId: existingChat.chat.id }
-        }
-
-        const [newChat] = await db
-          .insert(chat)
-          .values({ type: chatType, name })
-          .returning({ id: chat.id })
-
-        await db.insert(chatUser).values([
-          ...userIds.map((id) => ({
-            chatId: newChat.id,
-            userId: id,
-            role: "member" as const
-          })),
-          { chatId: newChat.id, userId, role: "admin" as const }
-        ])
-
-        subscribeUsersToChat(newChat.id, [...userIds, userId])
-        return { chatId: newChat.id }
-      } catch (error) {
-        console.error(error)
+        if (existingChat) return { chatId: existingChat.chat.id }
       }
+
+      const [newChat] = await db
+        .insert(chat)
+        .values({ type: chatType, name })
+        .returning({ id: chat.id })
+
+      await db.insert(chatUser).values([
+        ...userIds.map((id) => ({
+          chatId: newChat.id,
+          userId: id,
+          role: "member" as const
+        })),
+        {
+          chatId: newChat.id,
+          userId,
+          role: "admin" as const
+        }
+      ])
+
+      subscribeUsersToChat(newChat.id, [...userIds, userId])
+
+      return { chatId: newChat.id }
     },
     {
       detail: {
@@ -247,7 +246,7 @@ export default new Elysia({ prefix: "/chats" })
         .where(eq(chat.id, chatId))
         .limit(1)
 
-      if (!chatDetails) return error(404, "CHAT_NOT_FOUND")
+      if (!chatDetails) throw error(404, "CHAT_NOT_FOUND")
 
       return { chat: { ...chatDetails, participants } as ChatResponse }
     },
@@ -324,7 +323,7 @@ export default new Elysia({ prefix: "/chats" })
         .where(and(eq(chatUser.userId, userId), eq(chat.id, id)))
         .limit(1)
 
-      if (!chatDetails) return error(404, "CHAT_NOT_FOUND")
+      if (!chatDetails) throw error(404, "CHAT_NOT_FOUND")
 
       return {
         ...chatDetails,
@@ -360,7 +359,7 @@ export default new Elysia({ prefix: "/chats" })
         .where(and(eq(chatUser.userId, userId), eq(chatUser.chatId, chatId)))
         .limit(1)
 
-      if (!chatDetails) return error(404, "CHAT_NOT_FOUND")
+      if (!chatDetails) throw error(404, "CHAT_NOT_FOUND")
 
       const { type, role } = chatDetails
 
