@@ -1,9 +1,10 @@
 import { insertFile } from "@/src/api/file/files.api"
-import { user } from "@/src/api/users/users.schema"
+import { device, user } from "@/src/api/users/users.schema"
 import db from "@/src/db/connection"
 import { checkAndGetSession } from "@/src/lib/auth"
-import { and, eq, like, ne, sql } from "drizzle-orm"
+import { and, eq, isNotNull, like, ne, sql } from "drizzle-orm"
 import Elysia, { type Context, t } from "elysia"
+import { sendPushNotification } from "@/src/api/users/push-message"
 
 export default new Elysia({ prefix: "/users" })
   .get(
@@ -71,7 +72,7 @@ export default new Elysia({ prefix: "/users" })
         .from(user)
         .where(eq(user.id, id))
 
-      if (!userToReturn) return error(404, "USER_NOT_FOUND")
+      if (!userToReturn) throw error(404, "USER_NOT_FOUND")
 
       return userToReturn
     },
@@ -104,7 +105,7 @@ export default new Elysia({ prefix: "/users" })
       if (image) {
         const MAX_SIZE = 1_048_576
 
-        if (image.size > MAX_SIZE) return error(400, "IMAGE_MAX_SIZE_1MB_LIMIT")
+        if (image.size > MAX_SIZE) throw error(400, "IMAGE_MAX_SIZE_1MB_LIMIT")
 
         file = await insertFile(image)
       }
@@ -153,7 +154,7 @@ export default new Elysia({ prefix: "/users" })
         .from(user)
         .where(eq(user.id, id))
 
-      if (!userProfile) return error(404, "USER_NOT_FOUND")
+      if (!userProfile) throw error(404, "USER_NOT_FOUND")
 
       return {
         image: userProfile.image || null,
@@ -169,3 +170,59 @@ export default new Elysia({ prefix: "/users" })
       })
     }
   )
+  .put(
+    "/device",
+    async ({ request, body }) => {
+      const session = await checkAndGetSession(request.headers)
+      const userId = session.user.id
+
+      const [existingDevice] = await db
+        .select({ id: device.id })
+        .from(device)
+        .where(
+          and(eq(device.pushToken, body.pushToken), eq(device.userId, userId))
+        )
+        .limit(1)
+
+      if (existingDevice) return { deviceId: existingDevice.id }
+
+      const [newDevice] = await db
+        .insert(device)
+        .values({
+          userId,
+          ...body
+        })
+        .returning({ id: device.id })
+
+      return { deviceId: newDevice.id }
+    },
+    {
+      detail: {
+        description: "Set up push notification token for a user."
+      },
+      body: t.Object({
+        pushToken: t.String({ required: true }),
+        brand: t.String({ required: false }),
+        model: t.String({ required: false }),
+        osName: t.String({ required: false }),
+        osVersion: t.String({ required: false }),
+        deviceName: t.String({ required: false }),
+        deviceYear: t.String({ required: false })
+      })
+    }
+  )
+  .get("/push-check", async () => {
+    const devices = await db
+      .select({ pushToken: device.pushToken })
+      .from(device)
+      .where(and(isNotNull(device.pushToken), ne(device.pushToken, "")))
+
+    const pushTokens = devices.map((device) => device.pushToken)
+
+    await sendPushNotification(pushTokens, {
+      sound: "default",
+      title: "Original Title",
+      body: `And here is the body! Timestamp: ${new Date().toISOString()}`,
+      data: { someData: "goes here" }
+    })
+  })
