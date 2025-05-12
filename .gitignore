@@ -34,3 +34,5 @@ temp/
 # Optional: ignore built artifacts in packages
 **/dist/
 **/build/
+
+.linked/slash-mobile-c14a0-firebase-adminsdk-fbsvc-c5c62ae1b2.json
