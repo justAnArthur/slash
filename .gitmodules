@@ -1,0 +1,6 @@
+[submodule "modules/backend"]
+	path = modules/backend
+	url = https://github.com/justAnArthur/slash-backend.git
+[submodule "modules/mobile"]
+	path = modules/mobile
+	url = https://github.com/justAnArthur/slash-mobile.git
